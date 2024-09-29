@@ -13,7 +13,7 @@ metadata:
 
     # Fetch the git-clone task from hub, we are able to reference later on it
     # with taskRef and it will automatically be embedded into our pipeline.
-    pipelinesascode.tekton.dev/task: "git-clone"
+    pipelinesascode.tekton.dev/task: "[git-clone, pylint]"
 
     # Use maven task from hub
     #
@@ -55,8 +55,18 @@ spec:
             value: $(params.repo_url)
           - name: revision
             value: $(params.revision)
-      # Customize this task if you like, or just do a taskRef
-      # to one of the hub task.
+      - name: pylint
+        runAfter: [fetch-repository]
+        params:
+          - name: path
+            value: 'lib/'
+          - name: args
+            value: ["-r", "y"]
+        taskRef:
+          name: pylint
+        workspace:
+          - name: source
+            workspace: source 
       - name: noop-task
         displayName: Task with no effect
         runAfter:
