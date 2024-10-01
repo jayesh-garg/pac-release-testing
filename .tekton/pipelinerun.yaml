@@ -15,6 +15,7 @@ metadata:
     # with taskRef and it will automatically be embedded into our pipeline.
     pipelinesascode.tekton.dev/task: "git-clone"
 
+
     # Use maven task from hub
     #
     # pipelinesascode.tekton.dev/task-1: "maven"
@@ -55,9 +56,7 @@ spec:
             value: $(params.repo_url)
           - name: revision
             value: $(params.revision)
-      # Customize this task if you like, or just do a taskRef
-      # to one of the hub task.
-      - name: noop-task
+       - name: noop-task
         displayName: Task with no effect
         runAfter:
           - fetch-repository
